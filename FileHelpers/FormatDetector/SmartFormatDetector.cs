@@ -30,40 +30,20 @@ namespace FileHelpers.Detection
 
         #region "  Properties  "
 
-        private FormatHint mFormatHint;
-
         /// <summary>
         /// Provides a suggestion to the <see cref="SmartFormatDetector"/> 
         /// about the records in the file
         /// </summary>
-        public FormatHint FormatHint
-        {
-            get { return mFormatHint; }
-            set { mFormatHint = value; }
-        }
-
-        private int mMaxSampleLines = 300;
+        public FormatHint FormatHint { get; set; }
 
         /// <summary>
         /// The number of lines of each file to be used as sample data.
         /// </summary>
-        public int MaxSampleLines
-        {
-            get { return mMaxSampleLines; }
-            set { mMaxSampleLines = value; }
-        }
-
-        private Encoding mEncoding = Encoding.GetEncoding(0);
+        public int MaxSampleLines { get; set; } = 300;
 
         /// <summary>The encoding to Read and Write the streams.</summary>
         /// <remarks>Default is the system's current ANSI code page.</remarks>
-        public Encoding Encoding
-        {
-            get { return mEncoding; }
-            set { mEncoding = value; }
-        }
-
-        private double mFixedLengthDeviationTolerance = 0.01;
+        public Encoding Encoding { get; set; } = Encoding.GetEncoding(0);
 
         ///<summary>
         ///Indicates if the sample file has headers
@@ -74,11 +54,7 @@ namespace FileHelpers.Detection
         /// Used to calculate when a file has fixed length records. 
         /// Between 0.0 - 1.0 (Default 0.01)
         /// </summary>
-        public double FixedLengthDeviationTolerance
-        {
-            get { return mFixedLengthDeviationTolerance; }
-            set { mFixedLengthDeviationTolerance = value; }
-        }
+        public double FixedLengthDeviationTolerance { get; set; } = 0.01;
 
         #endregion
 
@@ -127,7 +103,7 @@ namespace FileHelpers.Detection
             var res = new List<RecordFormatInfo>();
             string[][] sampleData = GetSampleLines(files, MaxSampleLines);
 
-            switch (mFormatHint) {
+            switch (FormatHint) {
                 case FormatHint.Unknown:
                     CreateMixedOptions(sampleData, res);
                     break;
@@ -481,7 +457,7 @@ namespace FileHelpers.Detection
             var res = new List<string[]>();
 
             foreach (var file in files)
-                res.Add(RawReadFirstLinesArray(file, nroOfLines, mEncoding));
+                res.Add(RawReadFirstLinesArray(file, nroOfLines, Encoding));
 
             return res.ToArray();
         }
